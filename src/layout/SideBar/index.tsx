@@ -1,8 +1,11 @@
 import { Fragment, FC } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XIcon } from "@heroicons/react/outline";
-import { clsx } from "../../utils/helper";
+import { clsx, toAbsoluteUrl } from "../../utils/helper";
 import { navigation } from "../../constant";
+import { Link } from "react-router-dom";
+import SVG from "../../components/SVG";
+import { INavigation } from "../../types";
 
 interface Props {
   setOpen: (open: boolean) => void;
@@ -60,27 +63,31 @@ const SideBar: FC<Props> = ({ open, setOpen }) => {
                 </div>
               </Transition.Child>
               <div className="flex-shrink-0 flex items-center px-4">
-                <img className="h-8 w-auto" src="./images.png" alt="Workflow" />
+                <img
+                  className="h-8 w-auto"
+                  src={toAbsoluteUrl("/images/logo.png")}
+                  alt="Workflow"
+                />
               </div>
               <div className="mt-5 flex-1 h-0 overflow-y-auto">
                 <nav className="px-2 space-y-1">
-                  {navigation.map((item) => (
-                    <a
+                  {navigation.map((item: INavigation) => (
+                    <Link
                       key={item.name}
-                      href={item.href}
+                      to={item.href}
                       className={clsx(
                         item?.current
-                          ? "bg-indigo-800 text-white"
+                          ? "bg-primary text-white"
                           : "text-indigo-100 hover:bg-indigo-600",
                         "group flex items-center px-2 py-2 text-base font-medium rounded-md"
                       )}
                     >
-                      <item.icon
+                      <SVG
+                        path={item?.icon}
                         className="mr-4 flex-shrink-0 h-6 w-6 text-indigo-300"
-                        aria-hidden="true"
                       />
                       {item.name}
-                    </a>
+                    </Link>
                   ))}
                 </nav>
               </div>
@@ -89,21 +96,21 @@ const SideBar: FC<Props> = ({ open, setOpen }) => {
           <div className="flex-shrink-0 w-14" aria-hidden="true"></div>
         </Dialog>
       </Transition.Root>
-      <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
-        <div className="flex flex-col flex-grow pt-5 bg-primary-500 overflow-y-auto">
-          <div className="flex items-center flex-shrink-0 px-4">
+      <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 ">
+        <div className="flex flex-col flex-grow pt-5 bg-primary-500 overflow-y-auto rounded-tr-2xl rounded-br-2xl">
+          <div className="flex items-center flex-shrink-0 px-6">
             <img
               className="h-8 w-auto"
-              src={process.env.PUBLIC_URL + '/images.png'}
+              src={toAbsoluteUrl("/images/logo.png")}
               alt="Logo"
             />
           </div>
           <div className="mt-5 flex-1 flex flex-col">
             <nav className="flex-1 px-2 pb-4 space-y-1 mt-6">
-              {navigation.map((item) => (
-                <a
+              {navigation.map((item: INavigation) => (
+                <Link
                   key={item.name}
-                  href={item.href}
+                  to={item.href}
                   className={clsx(
                     item.current
                       ? "bg-primary text-white"
@@ -111,12 +118,12 @@ const SideBar: FC<Props> = ({ open, setOpen }) => {
                     "group flex items-center px-2 py-2 text-sm font-medium rounded-md mx-3"
                   )}
                 >
-                  <item.icon
-                    className="mr-3 flex-shrink-0 h-6 w-6 text-white"
-                    aria-hidden="true"
+                  <SVG
+                    path={item?.icon}
+                    className="mr-4 flex-shrink-0 h-4 w-6 text-indigo-300"
                   />
                   {item.name}
-                </a>
+                </Link>
               ))}
             </nav>
           </div>

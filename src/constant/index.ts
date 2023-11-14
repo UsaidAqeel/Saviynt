@@ -1,6 +1,16 @@
-import { HomeIcon } from "@heroicons/react/outline";
-import { INavigation } from "../types";
+import { INavigation, IUserNavigation } from "../types";
 
 export const navigation: INavigation[] = [
-  { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
+  {
+    name: "CUSTOMERS",
+    href: "/",
+    icon: "assets/icons/customers-icon.svg",
+    current: true,
+  },
+];
+
+export const userNavigation: IUserNavigation[] = [
+  { name: "Your Profile", href: "/" },
+  { name: "Settings", href: "/" },
+  { name: "Sign out", href: "/" },
 ];

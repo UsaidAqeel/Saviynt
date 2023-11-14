@@ -1,6 +1,12 @@
 export interface INavigation {
   name: string;
   href: string;
-  icon: (props: React.ComponentProps<"svg">) => JSX.Element;
+  icon: string;
   current: boolean;
 }
+
+export interface IUserNavigation {
+    name: string
+    href: string
+  }
+  

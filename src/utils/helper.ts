@@ -4,6 +4,6 @@ export const clsx = (
   return classes.filter(Boolean).join(" ");
 };
 
-export const isPublicImageUrl = (url: string): string => {
+export const toAbsoluteUrl = (url: string): string => {
   return process.env.PUBLIC_URL + url;
 };

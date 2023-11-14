@@ -5,13 +5,19 @@ import SVG from "../../components/SVG";
 import Table from "./components/Table";
 import { ICustomer } from "../../types";
 import { DeleteCustomerModal } from "./components/DeleteCustomer";
+import { useSelector, useDispatch } from "react-redux";
+import { setCustomerList } from "../../store/customer/slicer";
 
 export const Home = () => {
-  const [customers, setValue] = useLocalStorage("customers", []);
+  const dispatch: any = useDispatch();
+  const [_, setValue] = useLocalStorage("customers", []);
   const [isLoading, setIsLoading] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [customer, setCustomer] = useState({});
 
+  const { customers } = useSelector((state: any) => state?.customer);
   useEffect(() => {
-    if (customers && customers?.length > 0) return;
+    if (customers?.length > 0) return;
     handleFetchCustomer();
   }, [customers]);
 
@@ -20,13 +26,24 @@ export const Home = () => {
     const customers = await fetch_Customer();
     if (customers?.length > 0) {
       setValue(customers);
+      dispatch(setCustomerList(customers));
     }
     setIsLoading(() => false);
   };
 
+  const handleShowDeleteModal = (customer: ICustomer) => {
+    setCustomer(customer);
+    setShowDeleteModal(true);
+  };
+
   return (
     <div>
-      <DeleteCustomerModal open={true} setOpen={() => {}} />
+      <DeleteCustomerModal
+        open={showDeleteModal}
+        setOpen={setShowDeleteModal}
+        customer={customer as ICustomer}
+        customers={customers}
+       />
       <button className="bg-gradient-to-r from-[#57BC90] to-teal-900 text-white py-3 px-4 rounded-lg text-sm flex items-center">
         <SVG
           path="assets/icons/plus.svg"
@@ -34,7 +51,10 @@ export const Home = () => {
         />
         Add New CUSTOMER
       </button>
-      <Table customers={customers as ICustomer[]} />
+      <Table
+        customers={customers as ICustomer[]}
+        handleShowDeleteModal={handleShowDeleteModal}
+      />
     </div>
   );
 };

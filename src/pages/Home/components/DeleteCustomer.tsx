@@ -1,14 +1,46 @@
-import { FC, Fragment, useRef } from "react";
+import { FC, Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import SVG from "../../../components/SVG";
+import { ICustomer } from "../../../types";
+import useLocalStorage from "../../../hooks/useLocalStorage";
+import { useDispatch } from "react-redux";
+import { setCustomerList } from "../../../store/customer/slicer";
 
 interface Props {
   open: boolean;
   setOpen: (open: boolean) => void;
+  customer: ICustomer;
+  customers: ICustomer[];
 }
 
-export const DeleteCustomerModal: FC<Props> = ({ setOpen, open }) => {
+export const DeleteCustomerModal: FC<Props> = ({
+  setOpen,
+  open,
+  customer,
+  customers,
+}) => {
+  const dispatch: any = useDispatch();
   const cancelButtonRef = useRef(null);
+
+  const [_, setValue] = useLocalStorage("customers", []);
+  const [customersList, setCustomer] = useState<ICustomer[]>([]);
+
+  useEffect(() => {
+    if (customers && customers?.length > 0) {
+      setCustomer([...customers]);
+    }
+  }, [customers]);
+
+  const handleDeleteCustomer = () => {
+    const customer_index: any = customers?.findIndex(
+      ({ id }: ICustomer) => id == customer?.id
+    );
+    const list = JSON?.parse(JSON.stringify(customersList));
+    list.splice(customer_index, 1);
+    setValue(list);
+    dispatch(setCustomerList(list));
+    setOpen(false);
+  };
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
@@ -66,7 +98,7 @@ export const DeleteCustomerModal: FC<Props> = ({ setOpen, open }) => {
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 "
-                    onClick={() => setOpen(false)}
+                    onClick={handleDeleteCustomer}
                   >
                     Delete
                   </button>

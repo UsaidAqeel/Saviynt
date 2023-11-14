@@ -3,9 +3,10 @@ import { ICustomer } from "../../../types";
 
 interface Props {
   customers: ICustomer[];
+  handleShowDeleteModal: (customer: ICustomer) => void;
 }
 
-const Table: FC<Props> = ({ customers }) => {
+const Table: FC<Props> = ({ customers, handleShowDeleteModal }) => {
   return (
     <div className="mt-8 flex flex-col">
       <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -74,7 +75,10 @@ const Table: FC<Props> = ({ customers }) => {
                         <button className=" bg-[#B0E1B7] py-2 px-4 rounded text-sm flex items-center text-[#008212]">
                           Edit
                         </button>
-                        <button className="ml-2  py-2 px-4 bg-[#EF9999] rounded text-sm flex items-center text-[#D80000]">
+                        <button
+                          className="ml-2  py-2 px-4 bg-[#EF9999] rounded text-sm flex items-center text-[#D80000]"
+                          onClick={() => handleShowDeleteModal(customer)}
+                        >
                           Delete
                         </button>
                       </div>

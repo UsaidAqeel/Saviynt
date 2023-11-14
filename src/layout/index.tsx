@@ -17,7 +17,7 @@ export const Layout: FC<Props> = ({ children, pageTitle }) => {
             setSidebarOpen={setSidebarOpen}
             pageTitle={pageTitle as string}
           />
-          <main>
+          <main className="bg-[#F3F3F3]">
             <div className="py-6">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
                 <div className="py-4">{children}</div>

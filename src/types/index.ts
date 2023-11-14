@@ -6,7 +6,14 @@ export interface INavigation {
 }
 
 export interface IUserNavigation {
-    name: string
-    href: string
-  }
-  
+  name: string;
+  href: string;
+}
+
+export interface ICustomer {
+  id: number;
+  email: string;
+  first_name: string;
+  last_name: string;
+  avatar: string;
+}

@@ -1,5 +1,7 @@
 import { INavigation, IUserNavigation } from "../types";
 
+export const BASE_URI = "https://reqres.in/api/users?page=1";
+
 export const navigation: INavigation[] = [
   {
     name: "CUSTOMERS",

@@ -84,7 +84,7 @@ const SideBar: FC<Props> = ({ open, setOpen }) => {
                     >
                       <SVG
                         path={item?.icon}
-                        className="mr-4 flex-shrink-0 h-6 w-6 text-indigo-300"
+                        className="mr-4 flex-shrink-0 h-6 w-6 text-white"
                       />
                       {item.name}
                     </Link>

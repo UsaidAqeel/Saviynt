@@ -4,7 +4,10 @@ import SVG from "../../../components/SVG";
 import { ICustomer } from "../../../types";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import { useDispatch } from "react-redux";
-import { setCustomerList } from "../../../store/customer/slicer";
+import {
+  deleteCustomer,
+  setCustomerList,
+} from "../../../store/customer/slicer";
 
 interface Props {
   open: boolean;
@@ -32,13 +35,7 @@ export const DeleteCustomerModal: FC<Props> = ({
   }, [customers]);
 
   const handleDeleteCustomer = () => {
-    const customer_index: any = customers?.findIndex(
-      ({ id }: ICustomer) => id == customer?.id
-    );
-    const list = JSON?.parse(JSON.stringify(customersList));
-    list?.splice(customer_index, 1);
-    setValue(list);
-    dispatch(setCustomerList(list));
+    dispatch(deleteCustomer(customer?.id));
     setOpen(false);
   };
 

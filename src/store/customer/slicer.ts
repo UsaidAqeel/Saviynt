@@ -10,10 +10,34 @@ const customerSlicer = createSlice({
   },
   reducers: {
     setCustomerList(state, action) {
+      localStorage.setItem("customers", JSON.stringify(action.payload));
       state.customers = action.payload;
     },
     createCustomer(state, action) {
-      state.customers = [action.payload, ...state.customers];
+      const id = (state.customers?.length + 1).toString();
+      localStorage.setItem(
+        "customers",
+        JSON.stringify([...state.customers, { ...action.payload, id }])
+      );
+      state.customers = [...state.customers, { ...action.payload, id }];
+    },
+    updateCustomer(state, action) {
+      const customerIndex = state?.customers?.findIndex(
+        (customer) => customer?.id == action.payload?.id
+      );
+      const customerList = [...state?.customers];
+      customerList?.splice(customerIndex, 1, action.payload);
+      localStorage.setItem("customers", JSON.stringify(customerList));
+      state.customers = customerList;
+    },
+    deleteCustomer(state, action) {
+      const customerIndex = state?.customers?.findIndex(
+        (customer) => customer?.id == action.payload
+      );
+      const customerList = [...state?.customers];
+      customerList?.splice(customerIndex, 1);
+      localStorage.setItem("customers", JSON.stringify(customerList));
+      state.customers = customerList;
     },
   },
 });
@@ -21,6 +45,8 @@ const customerSlicer = createSlice({
 export const {
   createCustomer,
   setCustomerList,
+  updateCustomer,
+  deleteCustomer,
 } = customerSlicer.actions;
 const { reducer } = customerSlicer;
 

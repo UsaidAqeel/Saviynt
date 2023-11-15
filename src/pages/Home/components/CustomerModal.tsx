@@ -1,9 +1,11 @@
 import { FC, Fragment, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { CheckIcon } from "@heroicons/react/outline";
 import { ICustomer } from "../../../types";
 import { toAbsoluteUrl } from "../../../utils/helper";
 import SVG from "../../../components/SVG";
+import Button from "../../../components/Button";
+import { createCustomer, updateCustomer } from "../../../store/customer/slicer";
+import { useDispatch } from "react-redux";
 
 interface Props {
   open: boolean;
@@ -12,6 +14,8 @@ interface Props {
 }
 
 export const CustomerModal: FC<Props> = ({ open, setOpen, customer }) => {
+  const dispatch: any = useDispatch();
+
   const [inputValue, setInputValue] = useState({
     name: "",
     email: "",
@@ -23,12 +27,53 @@ export const CustomerModal: FC<Props> = ({ open, setOpen, customer }) => {
         name: `${customer?.first_name} ${customer?.last_name}`,
         email: customer?.email,
       });
+    } else {
+      setInputValue({
+        name: "",
+        email: "",
+      });
     }
   }, [customer]);
 
   const handleOnChange = (e: any) => {
     const { value, name } = e?.target;
     setInputValue((values) => ({ ...values, [name]: value }));
+  };
+
+  const handleAddCustomer = () => {
+    const name = inputValue?.name?.split(" ");
+
+    const data = {
+      first_name: name[0],
+      last_name: name.slice(1).join(" "),
+      email: inputValue?.email,
+      avatar: "https://reqres.in/img/faces/4-image.jpg",
+    };
+    dispatch(createCustomer({ ...data }));
+  };
+
+  const handleEditCustomer = () => {
+    const name = inputValue?.name?.split(" ");
+
+    const data = {
+      first_name: name[0],
+      last_name: name.slice(1).join(" "),
+      email: inputValue?.email,
+      avatar: customer?.avatar,
+      id: customer?.id,
+    };
+    dispatch(updateCustomer(data));
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    if (customer?.id) handleEditCustomer();
+    else handleAddCustomer();
+    setOpen(false);
+    setInputValue({
+      name: "",
+      email: "",
+    });
   };
 
   return (
@@ -68,24 +113,25 @@ export const CustomerModal: FC<Props> = ({ open, setOpen, customer }) => {
           >
             <div className="relative inline-block align-bottom bg-white rounded-2xl pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm w-full ">
               <div>
-                <div className={`bg-center	bg-no-repeat bg-cover relative h-32`}>
+                <div className={`relative h-32`}>
                   <img
                     src={toAbsoluteUrl("assets/images/back.svg")}
-                    className="absolute inset-0 -z-10"
+                    className="absolute inset-0 -z-10 "
                   />
                   <div className="p-3 flex justify-end">
                     <SVG
+                      onClick={() => setOpen(false)}
                       path="assets/icons/cut.svg"
                       className="h-3 w-6 text-white"
                     />
                   </div>
                   <h1 className="text-white text-center mt-5 text-2xl">
-                    {customer?.id ? "" : "Add New Customer"}
+                    {customer?.id ? "Edit Customer" : "Add New Customer"}
                   </h1>
                 </div>
                 <div className="mt-2 sm:mt-5 px-4 ">
-                  <form>
-                    <div>
+                  <form onSubmit={handleSubmit}>
+                    <div className="mb-3">
                       <label
                         htmlFor="email"
                         className="block text-sm font-medium text-gray-700"
@@ -123,17 +169,13 @@ export const CustomerModal: FC<Props> = ({ open, setOpen, customer }) => {
                         />
                       </div>
                     </div>
+                    <div className="mt-5 sm:mt-6 pt-5">
+                      <Button type={"submit"} className="w-full">
+                        {customer?.id ? "EDIT CUSTOMER" : "ADD CUSTOMER"}
+                      </Button>
+                    </div>
                   </form>
                 </div>
-              </div>
-              <div className="mt-5 sm:mt-6 px-4 pt-5 ">
-                <button
-                  type="button"
-                  className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm"
-                  onClick={() => setOpen(false)}
-                >
-                  Go back to dashboard
-                </button>
               </div>
             </div>
           </Transition.Child>

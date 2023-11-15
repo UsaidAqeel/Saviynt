@@ -65,7 +65,7 @@ const SideBar: FC<Props> = ({ open, setOpen }) => {
               <div className="flex-shrink-0 flex items-center px-4">
                 <img
                   className="h-8 w-auto"
-                  src={toAbsoluteUrl("assets/images/logo.png")}
+                  src={toAbsoluteUrl("assets/images/Logo.png")}
                   alt="Workflow"
                 />
               </div>
@@ -101,7 +101,7 @@ const SideBar: FC<Props> = ({ open, setOpen }) => {
           <div className="flex items-center flex-shrink-0 px-6">
             <img
               className="h-8 w-auto"
-              src={toAbsoluteUrl("assets/images/logo.png")}
+              src={toAbsoluteUrl("assets/images/Logo.png")}
               alt="Logo"
             />
           </div>

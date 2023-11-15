@@ -13,11 +13,11 @@ export const Home = () => {
   const dispatch: any = useDispatch();
   const { customers } = useSelector((state: any) => state?.customer);
 
+  const [customerListData, setCustomerListData] = useState<ICustomer[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [selectedCustomer, setSelectedCustomer] = useState({});
   const [showCustomerModal, setShowCustomerModal] = useState(false);
-  const [customerListData, setCustomerListData] = useState<ICustomer[]>([]);
+  const [selectedCustomer, setSelectedCustomer] = useState({});
   const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
@@ -53,17 +53,18 @@ export const Home = () => {
   };
 
   const handleSearch = (e: any) => {
-    const { value } = e.target;
+    const { value } = e?.target;
     setSearchValue(value);
     if (!value) {
       setCustomerListData([...customers]);
       return;
     }
     const filterData = [...customers]?.reduce((acc, cur: ICustomer) => {
-      const name = `${cur.first_name} ${cur.last_name}`
+      const name = `${cur?.first_name} ${cur?.last_name}`
         ?.toLocaleLowerCase()
         .includes(value);
-      if (cur?.id == value || name) {
+      const email = cur?.email?.toLocaleLowerCase()?.includes(value);
+      if (cur?.id == value || name || email) {
         acc.push(cur);
       }
       return acc;
@@ -98,6 +99,7 @@ export const Home = () => {
           className="shadow-sm py-3 px-4 w-80 block sm:text-sm border rounded-md outline-none mt-2 md:m-0"
           placeholder="Search"
           onChange={handleSearch}
+          value={searchValue}
         />
       </div>
       <Table

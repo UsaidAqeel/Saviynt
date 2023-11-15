@@ -6,7 +6,6 @@ import { userNavigation } from "../../constant";
 import { IUserNavigation } from "../../types";
 import { Link } from "react-router-dom";
 
-
 interface Props {
   setSidebarOpen: (open: boolean) => void;
   pageTitle: string;
@@ -30,7 +29,6 @@ const Header: FC<Props> = ({ setSidebarOpen, pageTitle }) => {
           <Menu as="div" className="ml-3 relative">
             <div>
               <Menu.Button className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
-                <span className="sr-only">Open user menu</span>
                 <img
                   className="h-8 w-8 rounded-full"
                   src={toAbsoluteUrl("assets/icons/avatar.svg")}

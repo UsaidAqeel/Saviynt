@@ -36,11 +36,12 @@ export const DeleteCustomerModal: FC<Props> = ({
       ({ id }: ICustomer) => id == customer?.id
     );
     const list = JSON?.parse(JSON.stringify(customersList));
-    list.splice(customer_index, 1);
+    list?.splice(customer_index, 1);
     setValue(list);
     dispatch(setCustomerList(list));
     setOpen(false);
   };
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog

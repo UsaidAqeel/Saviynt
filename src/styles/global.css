@@ -22,3 +22,7 @@ tbody:before {
     display: block;
     background-color: #F3F3F3;
 }
+
+.customer-modal-header{
+    background-image: url("/public/assets/images/back.svg");
+}

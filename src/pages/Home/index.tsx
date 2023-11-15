@@ -7,15 +7,17 @@ import { ICustomer } from "../../types";
 import { DeleteCustomerModal } from "./components/DeleteCustomer";
 import { useSelector, useDispatch } from "react-redux";
 import { setCustomerList } from "../../store/customer/slicer";
+import { CustomerModal } from "./components/CustomerModal";
 
 export const Home = () => {
   const dispatch: any = useDispatch();
+  const { customers } = useSelector((state: any) => state?.customer);
+
   const [_, setValue] = useLocalStorage("customers", []);
   const [isLoading, setIsLoading] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [customer, setCustomer] = useState({});
+  const [selectedCustomer, setSelectedCustomer] = useState({});
 
-  const { customers } = useSelector((state: any) => state?.customer);
   useEffect(() => {
     if (customers?.length > 0) return;
     handleFetchCustomer();
@@ -32,7 +34,7 @@ export const Home = () => {
   };
 
   const handleShowDeleteModal = (customer: ICustomer) => {
-    setCustomer(customer);
+    setSelectedCustomer(customer);
     setShowDeleteModal(true);
   };
 
@@ -41,9 +43,10 @@ export const Home = () => {
       <DeleteCustomerModal
         open={showDeleteModal}
         setOpen={setShowDeleteModal}
-        customer={customer as ICustomer}
+        customer={selectedCustomer as ICustomer}
         customers={customers}
-       />
+      />
+      <CustomerModal open={true} setOpen={() => {}}  customer={selectedCustomer as ICustomer} />
       <button className="bg-gradient-to-r from-[#57BC90] to-teal-900 text-white py-3 px-4 rounded-lg text-sm flex items-center">
         <SVG
           path="assets/icons/plus.svg"

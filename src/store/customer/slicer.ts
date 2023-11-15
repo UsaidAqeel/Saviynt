@@ -1,5 +1,6 @@
 // @ts-nocheck
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import { setItemInLocalStorage } from "../../utils/helper";
 
 const customerSlicer = createSlice({
   name: "customers",
@@ -10,15 +11,16 @@ const customerSlicer = createSlice({
   },
   reducers: {
     setCustomerList(state, action) {
-      localStorage.setItem("customers", JSON.stringify(action.payload));
+      setItemInLocalStorage("customers", action?.payload);
       state.customers = action.payload;
     },
     createCustomer(state, action) {
-      const id = (state.customers?.length + 1).toString();
-      localStorage.setItem(
-        "customers",
-        JSON.stringify([...state.customers, { ...action.payload, id }])
-      );
+      const lastIndex = state.customers?.length - 1;
+      const id = Number(state.customers[lastIndex]?.id) + 1;
+      setItemInLocalStorage("customers", [
+        ...state.customers,
+        { ...action.payload, id },
+      ]);
       state.customers = [...state.customers, { ...action.payload, id }];
     },
     updateCustomer(state, action) {
@@ -27,7 +29,7 @@ const customerSlicer = createSlice({
       );
       const customerList = [...state?.customers];
       customerList?.splice(customerIndex, 1, action.payload);
-      localStorage.setItem("customers", JSON.stringify(customerList));
+      setItemInLocalStorage("customers", customerList);
       state.customers = customerList;
     },
     deleteCustomer(state, action) {
@@ -36,7 +38,7 @@ const customerSlicer = createSlice({
       );
       const customerList = [...state?.customers];
       customerList?.splice(customerIndex, 1);
-      localStorage.setItem("customers", JSON.stringify(customerList));
+      setItemInLocalStorage("customers", customerList);
       state.customers = customerList;
     },
   },

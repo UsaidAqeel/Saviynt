@@ -16,6 +16,10 @@ table th:last-child {
 
 }
 
+table th {
+    text-wrap: nowrap;
+}
+
 tbody:before {
     line-height: 2em;
     content: "\200C";

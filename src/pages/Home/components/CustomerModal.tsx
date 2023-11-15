@@ -122,7 +122,7 @@ export const CustomerModal: FC<Props> = ({ open, setOpen, customer }) => {
                     <SVG
                       onClick={() => setOpen(false)}
                       path="assets/icons/cut.svg"
-                      className="h-3 w-6 text-white"
+                      className="h-3 w-6 text-white cursor-pointer"
                     />
                   </div>
                   <h1 className="text-white text-center mt-5 text-2xl">

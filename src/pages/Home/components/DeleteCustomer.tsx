@@ -1,38 +1,19 @@
-import { FC, Fragment, useEffect, useRef, useState } from "react";
+import { FC, Fragment, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import SVG from "../../../components/SVG";
 import { ICustomer } from "../../../types";
-import useLocalStorage from "../../../hooks/useLocalStorage";
 import { useDispatch } from "react-redux";
-import {
-  deleteCustomer,
-  setCustomerList,
-} from "../../../store/customer/slicer";
+import { deleteCustomer } from "../../../store/customer/slicer";
 
 interface Props {
   open: boolean;
   setOpen: (open: boolean) => void;
   customer: ICustomer;
-  customers: ICustomer[];
 }
 
-export const DeleteCustomerModal: FC<Props> = ({
-  setOpen,
-  open,
-  customer,
-  customers,
-}) => {
+export const DeleteCustomerModal: FC<Props> = ({ setOpen, open, customer }) => {
   const dispatch: any = useDispatch();
   const cancelButtonRef = useRef(null);
-
-  const [_, setValue] = useLocalStorage("customers", []);
-  const [customersList, setCustomer] = useState<ICustomer[]>([]);
-
-  useEffect(() => {
-    if (customers && customers?.length > 0) {
-      setCustomer([...customers]);
-    }
-  }, [customers]);
 
   const handleDeleteCustomer = () => {
     dispatch(deleteCustomer(customer?.id));
@@ -74,7 +55,7 @@ export const DeleteCustomerModal: FC<Props> = ({
                 <div className="bg-white px-4 pb-4 pt-6 sm:p-6 sm:pb-4">
                   <div className="my-5">
                     <div className="mx-auto flex items-center justify-center rounded-full ">
-                      <SVG path="/assets/icons/trash.svg" />
+                      <SVG path="/assets/icons/trash.svg"  />
                     </div>
                     <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                       <Dialog.Title

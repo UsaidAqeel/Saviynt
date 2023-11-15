@@ -107,12 +107,12 @@ const SideBar: FC<Props> = ({ open, setOpen }) => {
           </div>
           <div className="mt-5 flex-1 flex flex-col">
             <nav className="flex-1 px-2 pb-4 space-y-1 mt-6">
-              {navigation.map((item: INavigation) => (
+              {navigation?.map((item: INavigation) => (
                 <Link
-                  key={item.name}
-                  to={item.href}
+                  key={item?.name}
+                  to={item?.href}
                   className={clsx(
-                    item.current
+                    item?.current
                       ? "bg-primary text-white"
                       : "text-indigo-100 hover:bg-indigo-600",
                     "group flex items-center px-2 py-2 text-sm font-medium rounded-md mx-3"
@@ -122,7 +122,7 @@ const SideBar: FC<Props> = ({ open, setOpen }) => {
                     path={item?.icon}
                     className="mr-4 flex-shrink-0 h-4 w-6 text-indigo-300"
                   />
-                  {item.name}
+                  {item?.name}
                 </Link>
               ))}
             </nav>
